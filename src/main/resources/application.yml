@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: predavanja-demo
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: Mulan605.
+    name: MySQL Connection
+server:
+  port: 8080
+
+twitter:
+  url: https://twitter.com/api/v1/get-all-tweets
+  port: 443
+  username: twitter-api-user
+  password: twitter-api-password
+
+advance:
+  url: https://advanceweb.com
+  port: 555
+  username: dispecer
+  password: dispecer
+
+auth: false
+
+custom-security:
+  username: custom
+  password: custom
