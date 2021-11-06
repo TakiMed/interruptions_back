@@ -1,9 +1,9 @@
-package com.example.predavanjademo.config;
+// package com.example.predavanjademo.config;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
+/*
 @Configuration
 @ConfigurationProperties(prefix = "advance")
 public class AdvanceConfiguration {
@@ -52,3 +52,4 @@ public class AdvanceConfiguration {
 //    password: dispecer
 
 }
+*/

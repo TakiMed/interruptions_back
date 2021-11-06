@@ -1,3 +1,4 @@
+/*
 package com.example.predavanjademo.services;
 
 import com.example.predavanjademo.config.AdvanceConfiguration;
@@ -33,3 +34,5 @@ public class AdvanceService {
     // port ->555
     // username ->dispecer
     // password ->dispecer
+
+ */

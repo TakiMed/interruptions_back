@@ -1,14 +1,12 @@
+
 spring:
+  profiles:
+    active: prod
   application:
     name: predavanja-demo
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: root
-    password: Mulan605.
-    name: MySQL Connection
-server:
-  port: 8080
+  liquibase:
+    enabled: false
+    change-log: classpath:liquibase/master.xml
 
 twitter:
   url: https://twitter.com/api/v1/get-all-tweets
@@ -22,8 +20,3 @@ advance:
   username: dispecer
   password: dispecer
 
-auth: false
-
-custom-security:
-  username: custom
-  password: custom

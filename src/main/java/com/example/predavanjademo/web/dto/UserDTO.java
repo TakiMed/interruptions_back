@@ -11,7 +11,7 @@ public class UserDTO {
     private Integer id;
     private String firstName;
     private String lastName;
-    private List<ContactDTO> contacts;
+   // private List<ContactDTO> contacts;
 
     public Integer getId() {
         return id;
@@ -36,7 +36,7 @@ public class UserDTO {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
+/*
     public List<ContactDTO> getContacts() {
         return contacts;
     }
@@ -54,4 +54,6 @@ public class UserDTO {
                 ", contacts=" + contacts +
                 '}';
     }
+    */
+
 }

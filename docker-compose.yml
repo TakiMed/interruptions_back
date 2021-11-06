@@ -1,0 +1,20 @@
+
+services:
+  app-srv:
+    build:
+      context: .
+      dockerfile: app.dockerfile
+    image: "academy/app:srv"
+    ports:
+      - "8082:8082"  # container vs hos port
+    volumes:
+      - ./data/app-config:/config
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    restart: always
+    container_name: app_srv
+    networks:
+      - academynet
+
+networks:
+  academynet:

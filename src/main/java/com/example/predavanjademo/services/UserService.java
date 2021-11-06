@@ -1,39 +1,26 @@
 package com.example.predavanjademo.services;
-
-
 import com.example.predavanjademo.entities.User;
+import com.example.predavanjademo.repositories.UserRepository;
 import com.example.predavanjademo.web.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-    @Value(value = "${auth}")
-    private boolean authBool;
-
     @Autowired
-    private Environment environment;
+    private UserRepository userRepository;
 
-    public void printCustomSecurityProperties(){
-        // String username = environment.getProperty("${custom-security.username}");
-        // String password = environment.getProperty("${custom-security.password}");
-        String defaultUsername = environment.getProperty("${custom-security.username}","default-username");
-        String defaultPassword = environment.getProperty("${custom-security.password}", "defaultPasswrod");
-        // System.out.println("");
-        LOGGER.info("Username is: {} and Password id: {}", defaultUsername, defaultPassword);
-    }
     // tradicinalni nacin deklarises varijablu i kreiras objekat u kontruktoru userService-a
     /*
     private CustomerService customerService;
@@ -59,7 +46,10 @@ public class UserService {
 
     // 3. nacin DI - koristeci setter, ako imate ciklicne zavisnosti, jedan servis ukljucuje drugi i obratno
     //
+   /*
     private CustomerService customerService;
+
+
 
     @Autowired
     public void setCustomerService(CustomerService  customerService){
@@ -74,8 +64,9 @@ public class UserService {
         this.customerService.findByName(customerName); // NullPointerException
 
     }
-
+*/
     public User store(User user) {
+
         User savedUser = new User();
         savedUser.setId(78);
         savedUser.setFirstName(user.getFirstName());
@@ -85,22 +76,7 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-
-        List<User> users = new ArrayList<>();
-
-        User user1 = new User();
-        user1.setId(1);
-        user1.setFirstName("Marko");
-        user1.setLastName("Markovic");
-        users.add(user1);
-
-        User user2 = new User();
-        user2.setId(2);
-        user2.setFirstName("Zarko");
-        user2.setLastName("Zarkovic");
-        users.add(user2);
-        return users;
-
+        return userRepository.findAll();
     }
 
     public User getUserById(Integer id){
@@ -158,11 +134,57 @@ public class UserService {
         }
         return userDTOs;
     }
+
+    public List<User> findAllEntities() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> findUserEntityById(Integer id){
+        return userRepository.findById(id);
+    }
+
+
+    public User create(User user) {
+        return userRepository.save(user); // ave radi insert ako nema id-a, ao nadje uradice update
+    }
+
+    public User updateUserEntity(User user) {
+        return userRepository.save(user);
+    }
+
+    public User updateUserEntityById(Integer id, User user) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isPresent()){
+            User updatedUser = userOptional.get();
+            updatedUser.setFirstName(user.getFirstName());
+            return userRepository.save(updatedUser);
+        }
+        throw new EntityNotFoundException("User with id " + id + " not found");
+    }
+
+    public void deleteEntityById(Integer id) {
+        // userRepository.deleteById(id);
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isPresent()){
+            userRepository.deleteById(id);
+        }
+        throw new EntityNotFoundException("User with id " + id + " not found");
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsernameLike(username);
+    }
+
+    public List<User> findByIsActive() {
+        return userRepository.findByIsActiveIsTrue();
+    }
+
+    public List<User> findByCreatedAt(Date createdAt) {
+         return userRepository.findByCreatedAtBefore(createdAt);
+    }
+
+    public Boolean existingWithFirstNameStartingWith(String firstname) {
+       return userRepository.existsByFirstNameStartingWith(firstname);
+    }
+
 }
-
-// @Comoponent - da springBeanContainer kreira objekat klase UserService i moze da se ubrizga u bilo koje druge klase
-// sa svim svojim atributima
-// @Service - da SBC kreira objekat klase te i te
-// @Repository
-
-// @RestController

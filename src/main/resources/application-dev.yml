@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.198.1:3306/academy_2021?characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: Mulan605.
+    name: MySQL Connection
+    liquibase:
+      enabled: false
+      change-log: classpath:liquibase/master.xml
+server:
+  port: 8080
+
+jwt:
+  secret: bXlzZWNyZXQ=
+  validityInMilis: 3600
+files:
+  url: /Users/Tatjana/Desktop

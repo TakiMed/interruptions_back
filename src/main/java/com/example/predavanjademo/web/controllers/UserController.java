@@ -7,12 +7,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +50,7 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody User user)
     {
-        if(user.getId()!=null){return new ResponseEntity<>(HttpStatus.BAD_REQUEST);}
+        if(user.getId()==null){return new ResponseEntity<>(HttpStatus.BAD_REQUEST);}
         User storedUser = userService.store(user);
         return storedUser!=null
                 ? new ResponseEntity<>(storedUser, HttpStatus.CREATED)
@@ -104,4 +106,75 @@ public class UserController {
         LOGGER.info("payload: {}", userDTO.toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(value = "/entities/all")
+    public ResponseEntity<List<User>> findAllEntities(){
+        List<User> users = userService.findAllEntities();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    @GetMapping(value = "/entities/{id}")
+    public ResponseEntity<User> findEntityById(@PathVariable(value = "id") Integer id){
+        Optional<User> user = userService.findUserEntityById(id);
+        return  user.isPresent()
+                ? new ResponseEntity<>(user.get(), HttpStatus.OK) // 200
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND); //404
+    }
+
+    @PostMapping(value = "/entities")
+    public ResponseEntity<User> createUserEntity(@RequestBody User user){
+       User persistedUser = userService.create(user);
+       return new ResponseEntity<>(persistedUser, HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/entities")
+    public ResponseEntity<User> updateUserEntity(@RequestBody User user){
+        if(user.getId()==null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        User updatedUser = userService.updateUserEntity(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+    @PutMapping(value = "/entities/{id}")
+    public ResponseEntity<User> updateUserEntityById(@PathVariable(value = "id") Integer id, @RequestBody User user)
+    {
+        User updatedUser = userService.updateUserEntityById(id, user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/entities/{id}")
+    public ResponseEntity<Void> deleteUserEntity(@PathVariable(value = "id") Integer id)
+    {
+        // moras veze da raskines pa da obrises i iz rola
+        userService.deleteEntityById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/entities/by-username") // /ent/by-username?username=asd
+    public ResponseEntity<User> findEntityByUsername(@RequestParam(value = "username") String username){
+        Optional<User> user = userService.findByUsername(username);
+        return  user.isPresent()
+                ? new ResponseEntity<>(user.get(), HttpStatus.OK) // 200
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND); //404
+    }
+
+    @GetMapping(value = "/entities/by-isactive") // /ent/by-isactive?username=asd
+    public ResponseEntity<List<User>> findActiveUser()
+    {
+        List<User> users = userService.findByIsActive();
+        return new ResponseEntity<>(users, HttpStatus.OK); // 200
+    }
+
+    @GetMapping(value = "/entities/by-date-created") // ?created_at=2021-12-15T01:00:00 god-mm-ddThh:mm:ss
+    // mora se string iz request parama konvertovati u datum
+    public ResponseEntity<List<User>> findByCreatedAt(@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") @RequestParam(value = "created_at") Date createdAt)
+    {
+        List<User> users = userService.findByCreatedAt(createdAt);
+        return new ResponseEntity<>(users, HttpStatus.OK); // 200
+    }
+
+    @GetMapping(value = "/entities/existing-by-firstname")
+    public ResponseEntity<Boolean> existsByFirstNameStartingWith(@RequestParam(value = "first_name") String firstnameSearchTerm){
+        Boolean userBool = userService.existingWithFirstNameStartingWith(firstnameSearchTerm);
+        return new ResponseEntity<>(userBool, HttpStatus.OK); // 200
+    }
+
+
 }

@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.198.1:3306/academy_docker?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: "root"
+    password: Mulan605.
+    name: MySQL Connection
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    liquibase:
+      enabled: false
+server:
+  port: 8080
+jwt:
+  secret: bXlzZWNyZXQ=
+  validityInMilis: 3600
+files:
+  url: /Users/Tatjana/Desktop

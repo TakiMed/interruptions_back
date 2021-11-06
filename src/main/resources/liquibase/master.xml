@@ -1,0 +1,21 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+<!--    &lt;!&ndash; Include your change-sets &ndash;&gt;-->
+<!--    <include file="./changelogs/2021020318260000_added_entity_City.xml" relativeToChangelogFile="true" />-->
+<!--    <include file="./changelogs/2021020318500000_added_column_is_active_to_City.xml" relativeToChangelogFile="true" />-->
+<!--    <include file="./changelogs/2021020318550000_drop_column_is_active_from_City.xml" relativeToChangelogFile="true" />-->
+
+<!--    &lt;!&ndash; DONE! &ndash;&gt;-->
+<!--    <include file="./changelogs/2021020318560000_added_entity_Country.xml" relativeToChangelogFile="true" />-->
+<!--    <include file="./changelogs/2021020318570000_added_foreign_key_to_City.xml" relativeToChangelogFile="true" />-->
+<!--    <include file="./changelogs/2021020319080000_add_index_on_inserted_at_to_City.xml" relativeToChangelogFile="true" />-->
+
+<!--    &lt;!&ndash; SEEDS &ndash;&gt;-->
+<!--    <include file="./changelogs/2021020319100000_insert_dummy_data_to_Country.xml" relativeToChangelogFile="true" />-->
+<!--    <include file="./changelogs/2021020319210000_insert_dummy_data_to_City.xml" relativeToChangelogFile="true" />-->
+
+
+</databaseChangeLog>
