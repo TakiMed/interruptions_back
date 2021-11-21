@@ -67,7 +67,7 @@ public class InterruptionController {
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
-
+/*
     @GetMapping(value = "/rae")
     public ResponseEntity<Map<Integer, List<InterruptionRAEDTO>>> getRAEReport(){
         Map<Integer, List<InterruptionRAEDTO>> RAEList = interruptionService.getRAEInterruptionList();
@@ -75,7 +75,7 @@ public class InterruptionController {
                 ? new ResponseEntity<>(RAEList, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
+*/
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(value = "id") Integer id){
         interruptionService.deleteById(id);

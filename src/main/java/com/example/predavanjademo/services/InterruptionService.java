@@ -11,6 +11,7 @@ import com.example.predavanjademo.web.dto.CreateInterruptionDTO;
 import com.example.predavanjademo.web.dto.GetSubstationDTO;
 import com.example.predavanjademo.web.dto.InterruptionDTO;
 import com.example.predavanjademo.web.dto.InterruptionRAEDTO;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,13 +62,22 @@ public class InterruptionService {
         else throw new EntityNotFoundException("No Interruption with id  " +  id + " stored in DB.") ;
     }
 
-    public Map<Integer, List<InterruptionRAEDTO>> getRAEInterruptionList(){
+    public Map<Integer, List<InterruptionRAEDTO>> getRAEInterruptionMap(){
         List<InterruptionDTO> interruptionDTOList = this.findByDTOs();
         Map<Integer, List<InterruptionRAEDTO>> RAEMap = new HashMap<>();
         for(InterruptionDTO iDTO : interruptionDTOList){
             RAEMap.put(iDTO.getInterruptionNumber(), raeMapper.mapToRAE(iDTO));
         }
+        System.out.println(RAEMap.values().toString());
         return RAEMap;
+    }
+
+    public List<InterruptionRAEDTO> getRAEList(){
+        Map<Integer, List<InterruptionRAEDTO>> RAEmap = this.getRAEInterruptionMap();
+        List<InterruptionRAEDTO> RAEList =  new ArrayList<>();
+        RAEList = RAEmap.values()
+                .stream().flatMap(Collection::stream).collect(Collectors.toList());
+        return RAEList;
     }
 
 
